@@ -123,14 +123,14 @@ Transform<TScalar, NInputDimensions, NOutputDimensions>
 
   if( factor == 1.0 )
     {
-    for( NumberOfParametersType k = 0; k < numberOfParameters; k++ )
+    for( NumberOfParametersType k = 0; k < numberOfParameters; k++ ) //Floris: make this multitreaded?
       {
       this->m_Parameters[k] += update[k];
       }
     }
   else
     {
-    for( NumberOfParametersType k = 0; k < numberOfParameters; k++ )
+    for( NumberOfParametersType k = 0; k < numberOfParameters; k++ ) //Floris: make this multitreaded?
       {
       this->m_Parameters[k] += update[k] * factor;
       }

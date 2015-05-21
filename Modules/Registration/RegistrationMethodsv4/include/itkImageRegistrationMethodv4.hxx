@@ -295,13 +295,13 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage, 
 
   if( level == 0 )
     {
-    SizeValueType numberOfObjectPairs = static_cast<unsigned int>( 0.5 * this->GetNumberOfIndexedInputs() );
+    SizeValueType numberOfObjectPairs = static_cast<unsigned int>( 0.5 * this->GetNumberOfIndexedInputs() ); //Floris: limiting assumption: all pairs consist of unique inputs images
     if( numberOfObjectPairs == 0 )
       {
       itkExceptionMacro( "There are no input objects." );
       }
 
-    if( this->m_Metric->GetMetricCategory() == MetricType::MULTI_METRIC )
+    if( this->m_Metric->GetMetricCategory() == MetricType::MULTI_METRIC ) //Floris: why use a category member and not just check the dynamically casted multiMetric?
       {
       this->m_NumberOfMetrics = multiMetric->GetNumberOfMetrics();
       if( this->m_NumberOfMetrics != numberOfObjectPairs )

@@ -395,7 +395,7 @@ void DisplacementFieldTransform<TScalar, NDimensions>
     {
     this->m_DisplacementField = field;
 
-    if( !this->m_InverseDisplacementField.IsNull() )
+    if( !this->m_InverseDisplacementField.IsNull() ) //Floris: Why do the check if null, while setting it to null if true? has this anything to do with modifications of the pipeline?
       {
       this->m_InverseDisplacementField = ITK_NULLPTR;
       }

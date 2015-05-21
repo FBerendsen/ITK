@@ -87,7 +87,7 @@ namespace itk
  * Image masks are supported using SetMovingImageMask or SetFixedImageMask.
  * If the image mask is sparse, see the comments for use of sparse point sets.
  *
- * Sparse Sampling
+ * Sparse Sampling //Floris: important remarks!
  *
  * Sparse sampling is performed by supplying an arbitrary point list over
  * which to evaluate the

@@ -19,7 +19,7 @@
 #define itkBSplineTransformInitializer_h
 
 #include "itkObject.h"
-#include "itkObjectFactory.h"
+#include "itkObjectFactory.h" //Floris: Where is the factory used?
 
 namespace itk
 {

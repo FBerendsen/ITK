@@ -137,7 +137,7 @@ int PerformBSplineImageRegistration( int argc, char *argv[] )
   smoothingSigmasPerLevel[2] = 1; //0;
   affineSimple->SetSmoothingSigmasPerLevel( smoothingSigmasPerLevel );
   }
-
+  // Floris: what if it cannot be cast to a gradient descent optimizer? try all other optimizers?
   typedef itk::GradientDescentOptimizerv4 GradientDescentOptimizerv4Type;
   typename GradientDescentOptimizerv4Type::Pointer affineOptimizer =
     dynamic_cast<GradientDescentOptimizerv4Type * >( affineSimple->GetModifiableOptimizer() );
@@ -198,6 +198,7 @@ int PerformBSplineImageRegistration( int argc, char *argv[] )
   correlationMetric->SetRadius( radius );
   correlationMetric->SetUseMovingImageGradientFilter( false );
   correlationMetric->SetUseFixedImageGradientFilter( false );
+  correlationMetric->SetMaximumNumberOfThreads(1);
 
   typedef itk::RegistrationParameterScalesFromPhysicalShift<CorrelationMetricType> ScalesEstimatorType;
   typename ScalesEstimatorType::Pointer scalesEstimator = ScalesEstimatorType::New();
@@ -216,7 +217,7 @@ int PerformBSplineImageRegistration( int argc, char *argv[] )
 
   typedef itk::CompositeTransform<RealType, VImageDimension> CompositeTransformType;
   typename CompositeTransformType::Pointer compositeTransform = CompositeTransformType::New();
-  compositeTransform->AddTransform( affineSimple->GetModifiableTransform() );
+  compositeTransform->AddTransform( affineSimple->GetModifiableTransform() ); //Floris: why need Modifiable Transform, isn't GetTransform() const better?
 
   const unsigned int numberOfLevels = 3;
   const unsigned int SplineOrder = 3;

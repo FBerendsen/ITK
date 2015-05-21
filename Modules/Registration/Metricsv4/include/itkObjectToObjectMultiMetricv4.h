@@ -38,6 +38,7 @@ namespace itk
   * and the GetDerivative() method computes the derivative by computing:
   *
   * derivative = Sum_j ( w_j * dM_j / ||dM_j|| ) * ( Sum_j( ||dM_j|| ) / J )
+  Floris: Why are derivatives (length) normalized ? This is not the true derivative scale anymore...
   *
   * \note The metric value is unit-less, and thus it is difficult to compute a combined metric.
   * This metric returns the metric value in three ways:

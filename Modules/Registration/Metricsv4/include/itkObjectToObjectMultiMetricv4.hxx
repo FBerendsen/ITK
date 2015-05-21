@@ -283,13 +283,14 @@ ObjectToObjectMultiMetricv4<TFixedDimension, TMovingDimension, TVirtualImage, TI
       weightOverMagnitude = this->m_MetricWeights[j] / magnitude;
       }
     // derivative = \sum_j w_j * (dM_j / ||dM_j||)
+    //Floris: what is ||dM_j||? vectorfield magnitude? why normalization? This changes the true derivative (scale)
     for( NumberOfParametersType p = 0; p < this->GetNumberOfParameters(); p++ )
       {
       // roll our own loop to avoid temporary variable that could be large when using displacement fields.
       derivativeResult[p] += ( metricDerivative[p] * weightOverMagnitude );
       }
     }
-
+  //Floris: what is magnitude scaling?
   // Scale by totalMagnitude to prevent what amounts to implicit step estimation from magnitude scaling.
   // This keeps the behavior of this metric the same as a regular metric, with respect to derivative
   // magnitudes.

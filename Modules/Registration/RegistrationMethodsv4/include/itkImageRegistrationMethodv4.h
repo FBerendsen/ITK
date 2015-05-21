@@ -488,6 +488,7 @@ protected:
 
   //TODO: m_OutputTransform should be removed and replaced with a named input parameter for
   //      the pipeline
+  // Floris: What does this mean?
   OutputTransformPointer                                          m_OutputTransform;
 
 

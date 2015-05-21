@@ -171,6 +171,8 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputat
     this->m_MovingImageGradientCalculator->SetInputImage(this->m_MovingImage);
     }
 
+  //Floris: Are fixed/moving gradients always calcualted in the transformed domain? Or can the transform jacobians be used in any way?
+  //Floris: What happens if m_UseFixed/MovingImageGradientFilter == false and this->GetGradientSourceIncludesFixed/Moving() == false? Is the transform involved?
   /* Initialize default gradient image filters. */
   itkDebugMacro("InitializeDefaultFixedImageGradientFilter");
   this->InitializeDefaultFixedImageGradientFilter();
@@ -184,14 +186,14 @@ ImageToImageMetricv4<TFixedImage, TMovingImage, TVirtualImage, TInternalComputat
   if ( this->GetGradientSourceIncludesFixed() && this->m_UseFixedImageGradientFilter )
     {
     itkDebugMacro("Initialize: ComputeFixedImageGradientFilterImage");
-    this->ComputeFixedImageGradientFilterImage();
+    this->ComputeFixedImageGradientFilterImage(); //Floris: not called for Bspline registration
     }
 
   /* Compute gradient image for moving image. */
   if( this->GetGradientSourceIncludesMoving() && this->m_UseMovingImageGradientFilter )
     {
     itkDebugMacro("Initialize: ComputeMovingImageGradientFilterImage");
-    this->ComputeMovingImageGradientFilterImage();
+    this->ComputeMovingImageGradientFilterImage(); //Floris: not called for Bspline registration
     }
 }
 

@@ -123,7 +123,7 @@ BSplineTransformInitializer<TTransform, TImage>
   // We also store the corners using the point set class which gives us easy
   // access to the bounding box.
 
-  const CoordRepType BSplineTransformDomainEpsilon = std::pow( 2.0, -3 );
+  const CoordRepType BSplineTransformDomainEpsilon = std::pow( 2.0, -3 ); //Floris: what is this epsilon?
 
   ContinuousIndexType startIndex;
   for( unsigned int i = 0; i < SpaceDimension; i++ )

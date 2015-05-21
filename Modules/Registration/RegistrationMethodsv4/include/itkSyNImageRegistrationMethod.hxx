@@ -169,15 +169,15 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
       {
       fixedComposite->AddTransform( fixedInitialTransform );
       }
-    fixedComposite->AddTransform( this->m_FixedToMiddleTransform->GetInverseTransform() );
+    fixedComposite->AddTransform( this->m_FixedToMiddleTransform->GetInverseTransform() ); // Floris: GetInverseTransform() gives a new displacement transform that is the inverse of the original (by copying the displacementfield and swapping their definitions)
     fixedComposite->FlattenTransformQueue();
-    fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();
+    fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();// Floris: So the inverses are optimized?
 
     typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
     movingComposite->AddTransform( this->m_CompositeTransform );
     movingComposite->AddTransform( this->m_MovingToMiddleTransform->GetInverseTransform() );
     movingComposite->FlattenTransformQueue();
-    movingComposite->SetOnlyMostRecentTransformToOptimizeOn();
+    movingComposite->SetOnlyMostRecentTransformToOptimizeOn();// Floris: So the inverses are optimized?
 
     // Compute the update fields (to both moving and fixed images) and smooth
 

@@ -79,6 +79,7 @@ namespace itk
  * i.e. only the moving transform is being optimized when used in an optimizer.
  * Methods relevant to transform optimization such as GetNumberOfParameters(),
  * UpdateTransformParameters() are passed on to the active transform.
+ Floris: the eventual goal is not implemented...?
  * The eventual goal however is to allow for either moving, fixed or both
  * transforms to be active within a single metric.
  *

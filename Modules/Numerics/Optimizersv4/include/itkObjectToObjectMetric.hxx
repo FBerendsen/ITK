@@ -75,6 +75,9 @@ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage, TInternal
   /* Special checks for when the moving transform is dense/high-dimensional */
   if( this->HasLocalSupport() )
     {
+      //Floris: what has LocalSupport property to do with the actual check performed here? 
+      //Floris: checking if the domain of the transform suffices the domain of the images is not only useful for displacementfields but also for bsplines/
+      //Floris: What if you want to have less dense displacement fields (and interpolate when needed) is this also supported? Or do we need to down sample the images as well?
     /* Verify that virtual domain and displacement field are the same size
      * and in the same physical space. Handles CompositeTransform by checking
      * if first applied transform is DisplacementFieldTransform */
@@ -414,6 +417,8 @@ ObjectToObjectMetric<TFixedDimension, TMovingDimension, TVirtualImage, TInternal
 {
   // If it's a composite transform and the displacement field is the first
   // to be applied (i.e. the most recently added), then return that.
+  //Floris: what does "the first to be applied" mean here? T_comp(x) = T_last o T_first (x)? Which one is optimizer first or last? I expect last.
+  //Floris: Why would you specifically want to get a displacementfield here. It doesn't sound very general for a Object to Object class.
   typedef CompositeTransform<CoordinateRepresentationType, itkGetStaticConstMacro( MovingDimension ) >  MovingCompositeTransformType;
   const MovingTransformType* transform = this->m_MovingTransform.GetPointer();
   // If it's a CompositeTransform, get the last transform (1st applied).

@@ -656,7 +656,10 @@ CompositeTransform<TScalar, NDimensions>
    *    ( dT2/dT1 | x1 ) * ( dT1/dp1 | x0 )
    *    and ( dT2/dT1 | x1 )
    *
-   */
+   */ 
+//Floris: In this explaination the order of composition should be changed to T1(p1, T2(p2, T3(p3, x0))) to be consistent with other documentation.
+//Floris: dT/dp are stored as lying matrices, i.e. #p wide and #x high. That's why *left* multiplying is important.
+
   for( signed long tind = (signed long) this->GetNumberOfTransforms() - 1;
        tind >= 0; --tind )
     {

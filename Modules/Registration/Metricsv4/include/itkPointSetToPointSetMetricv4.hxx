@@ -312,7 +312,7 @@ PointSetToPointSetMetricv4<TFixedPointSet, TMovingPointSet, TInternalComputation
       jacobian.Fill( 0.0 );
       for( DimensionType d = 0; d < MovingPointDimension; d++ )
         {
-        jacobian(d, d) = 1.0;
+        jacobian(d, d) = 1.0; //Floris: ? jacobian is MovingPointDimension x NumberOf(Local)Parameters? What if no local support but global?
         }
       }
     else

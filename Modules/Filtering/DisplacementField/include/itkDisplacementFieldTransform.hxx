@@ -381,6 +381,7 @@ void
 DisplacementFieldTransform<TScalar, NDimensions>
 ::UpdateTransformParameters( const DerivativeType & update, ScalarType factor)
 {
+  //Floris: tangent space methods (e.g. diffeomorphic) use composition update instead of addition. Therefore SyN methods do the 'update' themselves.
   // This simply adds the values.
   // TODO: This should be multi-threaded probably, via image add filter.
   Superclass::UpdateTransformParameters( update, factor );

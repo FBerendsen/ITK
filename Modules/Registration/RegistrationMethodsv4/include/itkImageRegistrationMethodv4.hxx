@@ -94,7 +94,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage, 
 
   this->m_OptimizerWeights.SetSize( 0 );
   this->m_OptimizerWeightsAreIdentity = true;
-
+  //Floris: what is happening here? The Tranform Object is decorated to be a Data Object that can be passed through the pipeline. But why isn't the registrationMethod templated over Transform data objects in the first place?
   DecoratedOutputTransformPointer transformDecorator =
         itkDynamicCastInDebugMode< DecoratedOutputTransformType * >( this->MakeOutput(0).GetPointer() );
   this->ProcessObject::SetNthOutput( 0, transformDecorator );
@@ -411,7 +411,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage, 
       this->m_VirtualDomainImage = VirtualImageType::New();
       this->m_VirtualDomainImage->CopyInformation( this->GetFixedImage( this->m_FirstImageMetricIndex ) );
       this->m_VirtualDomainImage->SetRegions( this->GetFixedImage( this->m_FirstImageMetricIndex )->GetLargestPossibleRegion() );
-      this->m_VirtualDomainImage->Allocate();
+      this->m_VirtualDomainImage->Allocate(); //Floris: is the entire virtual image allocated? Even if images are sampled randomly? What about remarks in ImageToImageMetric::Initialize() on not allocating the image?
       }
     else
       {
@@ -950,7 +950,7 @@ ImageRegistrationMethodv4<TFixedImage, TMovingImage, TTransform, TVirtualImage, 
           // randomly perturb the point within a voxel (approximately)
           for ( unsigned int d = 0; d < ImageDimension; d++ )
             {
-            point[d] += randomizer->GetNormalVariate() * oneThirdVirtualSpacing[d];
+            point[d] += randomizer->GetNormalVariate() * oneThirdVirtualSpacing[d]; //Floris: why is it scaled by one third?
             }
           if( !fixedMaskImage || fixedMaskImage->IsInside( point ) )
             {

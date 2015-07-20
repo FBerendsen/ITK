@@ -350,7 +350,7 @@ BSplineSyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, T
   bspliner->SetSplineOrder( this->m_FixedToMiddleTransform->GetSplineOrder() );
   bspliner->SetNumberOfFittingLevels( 1 );
   bspliner->SetEnforceStationaryBoundary( true );
-  bspliner->SetEstimateInverse( false );
+  bspliner->SetEstimateInverse( false ); //Floris: no inverse?
   bspliner->Update();
 
   smoothField = bspliner->GetOutput();

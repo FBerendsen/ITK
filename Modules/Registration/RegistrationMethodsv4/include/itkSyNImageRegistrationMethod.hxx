@@ -174,7 +174,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
     fixedComposite->SetOnlyMostRecentTransformToOptimizeOn();// Floris: So the inverses are optimized?
 
     typename CompositeTransformType::Pointer movingComposite = CompositeTransformType::New();
-    movingComposite->AddTransform( this->m_CompositeTransform );
+    movingComposite->AddTransform( this->m_CompositeTransform ); //Floris: Why add this->m_CompositeTransform again? what about remarks in GenerateOutputdata?
     movingComposite->AddTransform( this->m_MovingToMiddleTransform->GetInverseTransform() );
     movingComposite->FlattenTransformQueue();
     movingComposite->SetOnlyMostRecentTransformToOptimizeOn();// Floris: So the inverses are optimized?
@@ -207,7 +207,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
     // Add the update field to both displacement fields (from fixed/moving to middle image) and then smooth
 
     typedef ComposeDisplacementFieldsImageFilter<DisplacementFieldType> ComposerType;
-
+    //Floris: T_total(x) = T_DisplacementField o T_Warpingfield (x). DisplacementField is interpolated
     typename ComposerType::Pointer fixedComposer = ComposerType::New();
     fixedComposer->SetDisplacementField( fixedToMiddleSmoothUpdateField );
     fixedComposer->SetWarpingField( this->m_FixedToMiddleTransform->GetDisplacementField() );
@@ -233,6 +233,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
     DisplacementFieldPointer movingToMiddleSmoothTotalField = this->InvertDisplacementField( movingToMiddleSmoothTotalFieldInverse, movingToMiddleSmoothTotalFieldTmp );
 
     // Assign the displacement fields and their inverses to the proper transforms.
+    //Floris: tranform->Update() performs addition, while tangent space methods (SYN) need composition.
     this->m_FixedToMiddleTransform->SetDisplacementField( fixedToMiddleSmoothTotalField );
     this->m_FixedToMiddleTransform->SetInverseDisplacementField( fixedToMiddleSmoothTotalFieldInverse );
 
@@ -324,7 +325,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
           movingResampler->SetDefaultPixelValue( 0 );
           movingResampler->Update();
 
-          multiMetric->GetMetricQueue()[n]->SetFixedObject( fixedResampler->GetOutput() );
+          multiMetric->GetMetricQueue()[n]->SetFixedObject( fixedResampler->GetOutput() ); //Floris: For m_DownsampleImagesForMetricDerivatives the transforms are used. See my later remark about setting identity transforms in the metric.
           multiMetric->GetMetricQueue()[n]->SetMovingObject( movingResampler->GetOutput() );
           }
         }
@@ -352,7 +353,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
         {
         this->m_Metric->SetFixedObject( fixedImages[0] );
         this->m_Metric->SetMovingObject( movingImages[0] );
-        dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetFixedTransform( const_cast<TransformBaseType *>( fixedTransform ) );
+        dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetFixedTransform( const_cast<TransformBaseType *>( fixedTransform ) ); //Floris: normal proceedure
         dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetMovingTransform( const_cast<TransformBaseType *>( movingTransform ) );
         }
       else
@@ -406,7 +407,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
       }
     else if( this->m_Metric->GetMetricCategory() == MetricType::IMAGE_METRIC )
       {
-      dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetFixedTransform( identityDisplacementFieldTransform );
+      dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetFixedTransform( identityDisplacementFieldTransform ); //Floris: So the trick with m_DownsampleImagesForMetricDerivatives is that the images are already resampled using the transforms, therefore the transforms have to be set to identity here.
       dynamic_cast<ImageMetricType *>( this->m_Metric.GetPointer() )->SetMovingTransform( identityDisplacementFieldTransform );
       }
     }
@@ -635,7 +636,7 @@ SyNImageRegistrationMethod<TFixedImage, TMovingImage, TOutputTransform, TVirtual
     // However, since this class handles its own optimization, we remove it
     // to optimize separately.  We then add it after the optimization loop.
 
-    this->m_CompositeTransform->RemoveTransform();
+    this->m_CompositeTransform->RemoveTransform(); //Floris: m_CompositeTransform was set as moving transform in the metric. By removing the transform it effectively reverts to the movingInitialTransform
 
     this->StartOptimization();
 
